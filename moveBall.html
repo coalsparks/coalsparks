@@ -1,0 +1,89 @@
+<div
+  id="ball0"
+  style="
+    z-index: 5;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: turquoise;
+  "
+></div>
+
+<div
+  id="ball1"
+  style="
+    z-index: 1;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: orange;
+  "
+></div>
+<div
+  id="ball2"
+  style="
+    z-index: 1;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: pink;
+  "
+></div>
+
+<script>
+  // ball is an array of the elements referring to each of the balls. 
+    var ball = [
+    document.getElementById("ball0"),
+    document.getElementById("ball1"),
+    document.getElementById("ball2"),
+  ];
+
+  // set our bounding box for the bouncing
+  var max_X= 600;
+  var max_Y = 300;
+
+  // create an array of the ball objects, in random spots within our bounding area
+  var allballs = ball.map(allBounce);
+  function allBounce(value, index) {
+    let bounce = {
+      velocity_x: 10,
+      velocity_y: 10,
+      position_x: Math.floor(Math.random() * max_X),
+      position_y: Math.floor(Math.random() * max_Y),
+    };
+    // bounce is an object - the current ball we're dealing with.
+    return bounce;
+  }
+
+
+
+  function mooveBall(index) {
+    // detect edges
+    if ((allballs[index].position_x > max_X) | (allballs[index].position_x < 0)) {
+      allballs[index].velocity_x = allballs[index].velocity_x * -1;
+    }
+    if ((allballs[index].position_y > max_Y) | (allballs[index].position_y < 0)) {
+      allballs[index].velocity_y = allballs[index].velocity_y * -1;
+      //change the color if it hits the Y-axis edge
+      let randomColor = Math.floor(Math.random() * 16777215).toString(16);
+      ball[index].style.background = "#" + randomColor;
+    }
+    allballs[index].position_x += allballs[index].velocity_x;
+    allballs[index].position_y += allballs[index].velocity_y;
+    ball[index].style.left = allballs[index].position_x + "px";
+    ball[index].style.top = allballs[index].position_y + "px";
+  }
+  // YOUR CODE
+  function mooveBalls() {
+    var i = 0; // iterate through the various balls
+    while (i < ball.length) {
+      mooveBall(i);
+      i++;
+    }
+  }
+
+  setInterval(mooveBalls, 35); // ever 10ms call mooveBalls - the lower the delay, the smoother the animation 
+</script>
